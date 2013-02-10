@@ -17,7 +17,7 @@
 	 * @private
 	 * @type {String}
 	 */
-	sVersion = '0.0.2';
+	sVersion = '0.1.0';
 
 	/**
 	 * Reference to false so it can be minified.
@@ -2493,15 +2493,6 @@
 			},
 			assets : {
 				get : MMM.assets.get
-			},
-			extend : function (sExtensionId, lib) {
-
-				if (this[sExtensionId] !== _UNDEFINED_) {
-					MMM.log('warning: you have overwrited ' + sExtensionId + ' library', null, true);
-				}
-
-				this[sExtensionId] = lib;
-
 			}
 		};
 
@@ -2513,7 +2504,7 @@
 			MMM.game.init.call(MMM);
 		},
 		create : MMM.create,
-		sandbox : oSandbox
+		libs : {}
 	};
 
 }(window, document));

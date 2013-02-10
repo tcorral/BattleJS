@@ -1,23 +1,29 @@
-MMM.create("entity").set("basicArena", function (oSandbox) {
+(function (win, doc, MMM) {
 
-	return {
+	'use strict';
 
-		type: "circle",
-		renderer: "circle",
+	MMM.create("entity").set("basicArena", function (oSandbox) {
 
-		radius : 400,
-		x : 400,
-		y : 400,
-		velocity : {
-			x : 0,
-			y : 0
-		},
+		return {
 
-		init : function () {
-			this.fillStyle("#FFFFFF");
-			this.strokeStyle("#000000");
-		}
+			type: "circle",
+			renderer: "circle",
 
-	};
+			radius : 400,
+			x : 400,
+			y : 400,
+			velocity : {
+				x : 0,
+				y : 0
+			},
 
-});
+			init : function () {
+				this.fillStyle("#FFFFFF");
+				this.strokeStyle("#000000");
+			}
+
+		};
+
+	});
+
+}(window, document, MMM));

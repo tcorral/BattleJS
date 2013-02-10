@@ -1,8 +1,10 @@
-MMM.sandbox.extend("collisions", function() {
+(function (win, doc, MMM) {
 
-	var Vector2D = MMM.sandbox.Vector2D;
+	'use strict';
 
-	return {
+	var Vector2D = win.Vector2D;
+
+	MMM.libs.collisions = {
 		/**
 		 * Fast test to check circle collision.
 		 * @param {object} oCircle1
@@ -165,4 +167,4 @@ MMM.sandbox.extend("collisions", function() {
 		}
 	};
 
-});
+}(window, document, MMM));

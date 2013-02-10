@@ -1,24 +1,30 @@
-MMM.create("bootstrap").set({
+(function (win, doc, MMM) {
 
-	canvas : {
+	'use strict';
 
-		width : 800,
-		height : 800,
+	MMM.create("bootstrap").set({
 
-		rescale : false
+		canvas : {
 
-	},
+			width : 800,
+			height : 800,
 
-	debug : true,
+			rescale : false
 
-	images : [
+		},
 
-		{ id : "bot", src : "app/img/bot.png" },
-	],
+		debug : true,
 
-	audio : [],
+		images : [
 
-	initialLevel : "arena"
+			{ id : "bot", src : "app/img/bot.png" },
+		],
+
+		audio : [],
+
+		initialLevel : "arena"
 
 
-});
+	});
+
+}(window, document, MMM));

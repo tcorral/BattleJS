@@ -1,13 +1,14 @@
-MMM.sandbox.extend("Point2D", (function () {
+(function (win, doc) {
+
+	'use strict';
+
 	/**
 	* Point2D.js
 	* copyright 2001-2002, Kevin Lindsey
 	*/
 	var Point2D = function (x, y) {
-		if ( arguments.length > 0 ) {
-			this.x = x;
-			this.y = y;
-		}
+		this.x = x;
+		this.y = y;
 	}
 
 	Point2D.prototype.clone = function() {
@@ -206,6 +207,6 @@ MMM.sandbox.extend("Point2D", (function () {
 		that.y = y;
 	};
 
-	return Point2D;
+	win.Point2D = Point2D;
 
-}()));
+}(window, document));

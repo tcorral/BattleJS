@@ -1,4 +1,6 @@
-MMM.sandbox.extend("Vector2D", (function () {
+(function (win, doc) {
+
+	'use strict';
 
 	var Vector2D = function (x, y) {
 		this.x = x || 0;
@@ -98,6 +100,6 @@ MMM.sandbox.extend("Vector2D", (function () {
 		return this.x + "," + this.y;
 	};
 
-	return Vector2D;
+	win.Vector2D = Vector2D;
 
-}()));
+}(window, document));

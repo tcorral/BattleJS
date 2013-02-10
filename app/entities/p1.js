@@ -1,25 +1,31 @@
-MMM.create("entity").set("p1", function (oSandbox) {
+(function (win, doc, MMM) {
 
-	var nMove = 5;
+	'use strict';
 
-	return {
+	MMM.create("entity").set("p1", function (oSandbox) {
 
-		heartbeat : function () {
-			this.move(nMove);
-		},
+		var nMove = 5;
 
-		collisionWithWall : function () {},
+		return {
 
-		collisionWithBot : function () {
-			console.log("BOT1 COLLIDE!");
-		},
+			heartbeat : function () {
+				this.move(nMove);
+			},
 
-		collisionWithBullet : function () {},
+			collisionWithWall : function () {},
 
-		botDetected : function () {},
+			collisionWithBot : function () {
+				console.log("BOT1 COLLIDE!");
+			},
 
-		bulletDetected : function () {},
+			collisionWithBullet : function () {},
 
-	};
+			botDetected : function () {},
 
-});
+			bulletDetected : function () {},
+
+		};
+
+	});
+
+}(window, document, MMM));

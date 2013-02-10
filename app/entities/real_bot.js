@@ -1,72 +1,78 @@
-/**
- * Base bot.
- */
-MMM.create("entity").set("realBot", function (oSandbox) {
+(function (win, doc, MMM) {
 
-	return {
-		_id : 'bot',
-		/**
-		 * Entity type.
-		 * @type {string}
-		 */
-		type : 'circle',
-		/**
-		 * Render type.
-		 * @type {string}
-		 */
-		renderer : 'circleImage',
-		x : 100,
-		y : 100,
-		/**
-		 * Circle radius.
-		 * @type {number}
-		 */
-		radius : 20,
+	'use strict';
 
-		velocity : {
-			x: 0,
-			y: 0
-		},
+	/**
+	 * Base bot.
+	 */
+	MMM.create("entity").set("realBot", function (oSandbox) {
 
-		mass : 10,
+		return {
+			_id : 'bot',
+			/**
+			 * Entity type.
+			 * @type {string}
+			 */
+			type : 'circle',
+			/**
+			 * Render type.
+			 * @type {string}
+			 */
+			renderer : 'circleImage',
+			x : 100,
+			y : 100,
+			/**
+			 * Circle radius.
+			 * @type {number}
+			 */
+			radius : 20,
 
-		angle : 180,
+			velocity : {
+				x: 0,
+				y: 0
+			},
 
-		max_velocity : 4,
-		max_acceleration : 0.5,
+			mass : 10,
 
-		live : 100,
+			angle : 180,
 
-		init : function () {
-			this.setImage("bot");
-		},
+			max_velocity : 4,
+			max_acceleration : 0.5,
 
-		move : function ( nAcceleration ) {
-			nAcceleration = Math.round(nAcceleration);
-			//nAcceleration = Math.abs(nAcceleration);
+			live : 100,
 
-			this.velocity.x += nAcceleration / 200;
-		},
-		/**
-		 *
-		 */
-		rotateBot : function ( nDegree ) {
-			this.rotate( nDegree );
-		},
+			init : function () {
+				this.setImage("bot");
+			},
 
-		shoot : function ( nPower ) {
+			move : function ( nAcceleration ) {
+				nAcceleration = Math.round(nAcceleration);
+				//nAcceleration = Math.abs(nAcceleration);
 
-		},
+				this.velocity.x += nAcceleration / 200;
+			},
+			/**
+			 *
+			 */
+			rotateBot : function ( nDegree ) {
+				this.rotate( nDegree );
+			},
 
-		/**
-		 * Entity update. Called on each frame.
-		 */
-		updateRealBot : function () {
+			shoot : function ( nPower ) {
 
-			this.x += this.velocity.x;
-			this.y += this.velocity.y;
+			},
 
-		}
-	};
+			/**
+			 * Entity update. Called on each frame.
+			 */
+			updateRealBot : function () {
 
-});
+				this.x += this.velocity.x;
+				this.y += this.velocity.y;
+
+			}
+		};
+
+	});
+
+}(window, document, MMM));
