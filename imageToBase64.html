@@ -1,0 +1,34 @@
+ <!doctype html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>Index</title>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="description" content="">
+	<meta name="author" content="Pere Monfort">
+	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+
+	<script>
+
+	window.onload = function () {
+		var oCanvas = document.createElement("canvas"),
+			oContext = oCanvas.getContext("2d"),
+			oImage = document.getElementById("logo");
+
+			oCanvas.width = 104;
+			oCanvas.height = 76;
+
+
+			oContext.drawImage(oImage, 0, 0);
+
+			document.body.innerHTML = oCanvas.toDataURL();
+
+	}
+	</script>
+</head>
+<body>
+<img src="test/resources/pixel.png" id="logo" />
+</body>
+</html>
