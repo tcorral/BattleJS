@@ -10,7 +10,7 @@
 
 	'use strict';
 
-	var MMM, oSandbox, log, sVersion, fpIsFunction, fpIsArray, fpProxy, _FALSE_, _TRUE_, _NULL_, _OBJECT_, _STRING_, _NUMBER_;
+	var MMM, oSandbox, sVersion, fpIsFunction, fpIsArray, fpProxy, _FALSE_, _TRUE_, _NULL_, _OBJECT_, _STRING_, _NUMBER_;
 
 	/**
 	 * Version of MesmerismJS.
@@ -55,13 +55,6 @@
 	 * @private
 	 */
 	_NUMBER_ = 'number';
-
-	/**
-	 * Shortcut for "win.console.log".
-	 * @type {function}
-	 * @private
-	 */
-	log = win.console.log;
 
 	/**
 	 * To know if the passed argument is a function.
@@ -207,7 +200,7 @@
 			}
 		}
 
-		log(sErrorMessage);
+		win.console.log(sErrorMessage);
 
 		if (bThrowError === _TRUE_){
 			throw sError;
@@ -363,6 +356,7 @@
 
 			this._MATHPI180 = Math.PI / 180;
 			this._MATH180PI = 180 / Math.PI;
+			this._DOUBLEMATHPI = Math.PI*2;
 
 		};
 
@@ -421,6 +415,13 @@
 			this._rotation += (nAngle * this._MATHPI180);
 		};
 		/**
+		 * Rotate the entity to an exact angle.
+		 * @param {number} Entity angle.
+		 */
+		EntityBase.prototype.setAngle = function (nAngle) {
+			this._rotation = nAngle * this._MATHPI180;
+		}
+		/**
 		 * Change entity Alpha.
 		 * @param {number} nAlpha Alpha.
 		 */
@@ -471,7 +472,12 @@
 			if (typeof sString === _STRING_) {
 				MMM.renderer.add(sString, this);
 			}
-		}
+		};
+
+		EntityBase.prototype.removeFromLevel = function () {
+			MMM.renderer.remove(this);
+			MMM.updater.remove(this);
+		};
 
 		/**
 		 * Rectangle constructor.
@@ -1151,11 +1157,10 @@
 
 							oRenders[oEntity._renderer](oBufferContext, oEntity, nCx, nCy);
 
-							if (typeof oEntity.debugDraw === 'function') {
-								oEntity.debugDraw(oBufferContext, nCx, nCy);
-							}
-
 							if (bDebug === true) {
+								if (typeof oEntity.debugDraw === 'function') {
+									oEntity.debugDraw(oBufferContext, nCx, nCy);
+								}
 								oRenders.debug(oBufferContext, oEntity, nCx, nCy);
 							}
 
@@ -2478,7 +2483,32 @@
 		}
 
 	};
+	/**
+	 * Framework debug utilities.
+	 * @namespace debug.
+	 * @private
+	 */
+	MMM.debug = {
+		log : (function () {
 
+			var oLastTime = {};
+
+			return function (sMessage, oInfo, nTime) {
+				var nCurrentTime = new win.Date().getTime(),
+					nLastTime;
+
+				if (oLastTime[sMessage] === _UNDEFINED_) {
+					oLastTime[sMessage] = 0;
+				}
+
+				if (nCurrentTime - oLastTime[sMessage] > nTime) {
+					MMM.log(sMessage, oInfo);
+					oLastTime[sMessage] = nCurrentTime;
+				}
+			}
+
+		}())
+	};
 	/**
 	 * Tools that can be used by the entities & levels.
 	 * @type {object}
@@ -2493,6 +2523,12 @@
 			},
 			assets : {
 				get : MMM.assets.get
+			},
+			debug : {
+				active : function () {
+					return MMM.bootstrap.get("debug") || false;
+				},
+				log : MMM.debug.log
 			}
 		};
 

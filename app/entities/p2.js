@@ -7,16 +7,21 @@
 		return {
 
 			heartbeat : function () {
-				this.move(-5);
+				//this.move(nMove);
+				//this.rotate(1);
 			},
 
-			collisionWithWall : function () {},
+			collisionWithWall : function () {
+				oSandbox.debug.log("Collision WITH WALL!!!", null, 1000);
+			},
 
 			collisionWithBot : function () {
-				console.log("BOT2 COLLIDE!");
+				oSandbox.debug.log("Collision WITH BOT!!!", null, 1000);
 			},
 
-			collisionWithBullet : function () {},
+			collisionWithBullet : function (oData) {
+				console.log(oData);
+			},
 
 			botDetected : function () {},
 

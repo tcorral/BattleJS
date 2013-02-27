@@ -4,7 +4,8 @@
 
 	MMM.create("entity").set("mediator", function (oSandbox) {
 
-		var oRealBot;
+		var oRealBot,
+			oArena;
 
 		return {
 
@@ -17,10 +18,10 @@
 			},
 			/**
 			 * To move the logicalBot.
-			 * @param {number} nAcceleration Acceleration.
+			 * @param {number} nVelocity Desired velocity in %.
 			 */
-			move : function (nAcceleration) {
-				oRealBot.move(nAcceleration);
+			move : function (nVelocity) {
+				oRealBot.move(nVelocity);
 			},
 			/**
 			 * To rotate the logicalBot.
@@ -30,6 +31,13 @@
 				oRealBot.rotateBot(nDegree);
 			},
 			/**
+			 * To rotate the cannon.
+			 * @param {number} nDegree Degree.
+			 */
+			rotateCannon : function (nDegree) {
+				oRealBot.rotateCannon(nDegree);
+			},
+			/**
 			 * Makes shot the logicalBot.
 			 * @param {number} nPower Shot power.
 			 */
@@ -37,8 +45,16 @@
 				oRealBot.shoot(nPower);
 			},
 
-			currentLive : function () {
-				return oRealBot.live;
+			get : {
+				angle : function () {
+					return oRealBot.angle.bot;
+				},
+				cannon : function () {
+					return oRealBot.angle.cannon;
+				},
+				life : function () {
+					return oRealBot.life;
+				}
 			},
 
 			/**

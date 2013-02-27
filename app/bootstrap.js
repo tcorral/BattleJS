@@ -18,6 +18,7 @@
 		images : [
 
 			{ id : "bot", src : "app/img/bot.png" },
+			{ id : "cannon", src : "app/img/cannon.png" },
 		],
 
 		audio : [],
