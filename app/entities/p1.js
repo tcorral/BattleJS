@@ -4,14 +4,12 @@
 
 	MMM.create("entity").set("p1", function (oSandbox) {
 
-		var nMove = 50;
-
 		return {
 
 			heartbeat : function () {
 				//this.move(nMove);
-				this.rotate(0.5);
-				this.rotateCannon(10);
+				//this.rotate(nBotRotate);
+				//this.rotateCannon(nCannonRotate);
 			},
 
 			collisionWithWall : function () {
@@ -28,14 +26,7 @@
 
 			botDetected : function () {},
 
-			bulletDetected : function () {},
-
-			events : {
-				keydown : function () {
-					this.shoot();
-					nMove = 100;
-				}
-			}
+			bulletDetected : function () {}
 
 		};
 

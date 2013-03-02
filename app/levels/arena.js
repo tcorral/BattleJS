@@ -39,8 +39,8 @@
 				/**
 				 * Import Player bots.
 				 */
-				aLogicalBots.push(this.importEntity("p1"));
 				aLogicalBots.push(this.importEntity("p2"));
+				aLogicalBots.push(this.importEntity("p1"));
 				/**
 				 * Import Arena entity.
 				 */
@@ -66,15 +66,29 @@
 					oMediator = this.importEntity("mediator");
 					// Create the logicalBot.
 					oRealBot = this.importEntity("realBot", {
-						arena : this
+						arena : this,
+						count : nCount,
+						botName : oLogicalBot._idName
 					});
 					/**
 					 * We have to decide how to positon the bots in the screen.
 					 */
 					if (nCount === 1)
 					{
-						oRealBot.x = 100;
-						oRealBot.y = 200;
+						oRealBot.x = 400;
+						oRealBot.y = 400;
+						oRealBot.extend({oDebug : {
+							oKeys : {
+									ROTATE_RIGHT : 'RIGHT',
+									ROTATE_LEFT : 'LEFT',
+									ACCELERATE : 'UP',
+									BRAKE : 'DOWN',
+									SHOOT : 'D',
+									CANNON_RIGHT : 'S',
+									CANNON_LEFT : 'A'
+								}
+
+						}});
 					}
 
 					// Define the logicalBot.
@@ -139,7 +153,7 @@
 						oRealBot1,
 						oRealBot2,
 						nLen = aLogicalBots.length,
-						bCollision;
+						oCollision;
 
 					for (nCount; nCount < nLen; nCount += 1) {
 						oLogicalBot2 = aLogicalBots[nCount];
@@ -150,9 +164,9 @@
 							oRealBot1 = oRealBots[oLogicalBot1._uid];
 							oRealBot2 = oRealBots[oLogicalBot2._uid];
 
-							bCollision = oCollisions.checkCircleCircle(oRealBot1, oRealBot2, true);
+							oCollision = oCollisions.checkCircleCircle(oRealBot1, oRealBot2, true);
 							// Notify bots if they collided.
-							if (bCollision === true) {
+							if (oCollision.collisionDetected === true) {
 								oLogicalBot1.collisionWithBot();
 								oLogicalBot2.collisionWithBot();
 
@@ -172,12 +186,12 @@
 				 */
 				checkWalls : function (oLogicalBot) {
 
-					var bCollision,
+					var oCollision,
 						oRealBot = oRealBots[oLogicalBot._uid];
 
-					bCollision = oCollisions.checkCircleInsideCircle(oArena, oRealBot);
+					oCollision = oCollisions.checkCircleInsideCircle(oArena, oRealBot);
 
-					if (bCollision === true) {
+					if (oCollision.collisionDetected === true) {
 						// Send the notification to the logical bot.
 						oLogicalBot.collisionWithWall();
 					}
@@ -192,14 +206,14 @@
 						nLength = aBullets.length,
 						oRealBot = oRealBots[oLogicalBot._uid],
 						oBullet,
-						bCollide,
+						oCollide,
 						bIsOut;
 
 					for (nCount; nCount < nLength; nCount += 1) {
 						oBullet = aBullets[nCount];
-						bCollide = oCollisions.checkCircleCircle(oRealBot, oBullet, false);
+						oCollide = oCollisions.checkCircleCircle(oRealBot, oBullet, false);
 
-						if (bCollide === true) {
+						if (oCollide.collisionDetected === true) {
 
 							// Remove bullet to active bullets array.
 							aBulletsToRemove.push(oBullet);

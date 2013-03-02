@@ -21,15 +21,7 @@
 			init : function () {
 				this.fillStyle("#FFFFFF");
 				this.strokeStyle("#000000");
-			},
-
-			getVelocityXY : function () {
-				return {
-					x : 0,
-					y : 0
-				}
 			}
-
 		};
 
 	});

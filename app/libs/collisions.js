@@ -55,7 +55,7 @@
 		 */
 		_checkCircleCircle : function (oCircle1, oCircle2, bApplyCollision) {
 
-			var C, Clen, V, Vlen, V1, V2, VN1, VN2, sumRadii, sumRadiiSquared, M1, M2, F, N, n, D, T, a1, a2, v1x, v1y, v2x, v2y, optimizedP, distance;
+			var oReturn, C, Clen, V, Vlen, V1, V2, VN1, VN2, sumRadii, sumRadiiSquared, M1, M2, F, N, n, D, T, a1, a2, v1x, v1y, v2x, v2y, optimizedP, distance;
 
 			V1 = new Vector2D(oCircle1.velocity.x, oCircle1.velocity.y);
 			V2 = new Vector2D(oCircle2.velocity.x, oCircle2.velocity.y);
@@ -63,6 +63,8 @@
 
 			C = new Vector2D(oCircle2.x - oCircle1.x, oCircle2.y - oCircle1.y);
 			Clen = C.length();
+
+			oReturn = this.getReturnStructure();
 
 			/**
 			 * Our next early escape test is to determine if A is actually moving towards B.
@@ -154,28 +156,28 @@
 
 									oCircle1.velocity.x = v1x;
 									oCircle1.velocity.y = v1y;
-									oCircle1.velocity.current = win.Trigo.getHypotenuse({
+									/*oCircle1.velocity.current = win.Trigo.getHypotenuse({
 										adjacent: v1x,
 										opposite: v1y
-									});
+									});*/
 
 									oCircle2.velocity.x = v2x;
 									oCircle2.velocity.y = v2y;
 
-									oCircle1.velocity.current = win.Trigo.getHypotenuse({
+									/*oCircle2.velocity.current = win.Trigo.getHypotenuse({
 										adjacent: v2x,
 										opposite: v2y
-									});
+									});*/
 								}
 
-								return true;
+								oReturn.collisionDetected = true;
 							}
 						}
 					}
 				}
 			}
 
-			return false;
+			return oReturn;
 		},
 		/**
 		 * Check if a inner (small) circle intersects with the outer (big) circle.
@@ -189,7 +191,7 @@
 		 */
 		checkCircleInsideCircle : function (oOuterCircle, oInnerCircle) {
 
-			var oResult = false,
+			var oReturn = this.getReturnStructure(),
 				oCenter = new win.Point2D(oOuterCircle.x, oOuterCircle.y),
 				nRadius = oOuterCircle.radius - oInnerCircle.radius,
 				oPointA = new win.Point2D(oInnerCircle.x, oInnerCircle.y),
@@ -200,8 +202,7 @@
 				nDeter,
 				nE,
 				nU1,
-				nU2,
-				bCollide = false;
+				nU2;
 
 			nA = (oPointB.x - oPointA.x) * (oPointB.x - oPointA.x) + (oPointB.y - oPointA.y) * (oPointB.y - oPointA.y);
 			nB = 2 * ((oPointB.x - oPointA.x) * (oPointA.x - oCenter.x) + (oPointB.y-oPointA.y) * (oPointA.y - oCenter.y));
@@ -213,10 +214,10 @@
 				oInnerCircle.velocity.x = 0;
 				oInnerCircle.velocity.y = 0;
 				oInnerCircle.velocity.current = 0;
-				bCollide = true;
+				oReturn.collisionDetected = true;
 			} else if (nDeter==0) {
 				// Ball is TANGENT.
-				oResult = 'tangent';
+				oReturn.collisionDetected = false;
 			} else {
 				nE = win.Math.sqrt(nDeter);
 				nU1 = (-nB + nE) / (2 * nA);
@@ -228,38 +229,46 @@
 						oInnerCircle.velocity.x = 0;
 						oInnerCircle.velocity.y = 0;
 						oInnerCircle.velocity.current = 0;
-						bCollide = true;
+						oReturn.collisionDetected = true;
 					} else {
 						// Ball is TANGENT.
-						oResult = 'tangent';
+						oReturn.collisionDetected = false;
 					}
 				} else {
-					oResult = [];
+					oReturn.collisionPoint = [];
 					if (0 <= nU1 && nU1 <=1) {
 						// Is outside.
-						oResult.push(oPointA.lerp(oPointB, nU1));
+						oReturn.collisionPoint.push(oPointA.lerp(oPointB, nU1));
 					}
 					if (0 <= nU2 && nU2 <=1) {
 						// Is outside.
-						oResult.push(oPointA.lerp(oPointB, nU2));
+						oReturn.collisionPoint.push(oPointA.lerp(oPointB, nU2));
+					}
+
+					if (oReturn.collisionPoint.length > 0) {
+
+						oInnerCircle.x = (oInnerCircle.velocity.x >= 0) ? win.Math.floor(oReturn.collisionPoint[0].x) : win.Math.ceil(oReturn.collisionPoint[0].x);
+						oInnerCircle.y = (oInnerCircle.velocity.y >= 0) ? win.Math.floor(oReturn.collisionPoint[0].y) : win.Math.ceil(oReturn.collisionPoint[0].y);
+
+						oInnerCircle.velocity.x = 0;
+						oInnerCircle.velocity.y = 0;
+						oInnerCircle.velocity.current = (oInnerCircle.velocity.current / 2) * -1;
+
+						oReturn.collisionDetected = true;
+
 					}
 				}
 			}
 
-			if (typeof oResult !== 'string') {
+			return oReturn;
 
-				oInnerCircle.x = (oInnerCircle.velocity.x >= 0) ? win.Math.floor(oResult[0].x) : win.Math.ceil(oResult[0].x);
-				oInnerCircle.y = (oInnerCircle.velocity.y >= 0) ? win.Math.floor(oResult[0].y) : win.Math.ceil(oResult[0].y);
+		},
 
-				oInnerCircle.velocity.x = 0;
-				oInnerCircle.velocity.y = 0;
-				oInnerCircle.velocity.current = 0;
-
-				bCollide = true;
-			}
-
-			return bCollide;
-
+		getReturnStructure : function () {
+			return {
+				collisionDetected : false,
+				collisionPoint : null
+			};
 		}
 	};
 

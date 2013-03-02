@@ -16,7 +16,7 @@
 				x : 0,
 				y : 0
 			},
-			initialVelocity : 6,
+			initialVelocity : 5,
 
 			init : function () {
 				var oVelocity,

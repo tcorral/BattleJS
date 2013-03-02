@@ -629,6 +629,7 @@
 					}
 
 					oEntity._uid = MMM.utilities.generateUID();
+					oEntity._idName = sEntityId;
 					oBuiltEntities[sEntityId] = oEntity;
 				}
 				/**

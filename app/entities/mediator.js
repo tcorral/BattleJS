@@ -60,12 +60,13 @@
 			/**
 			 * Execute the user bot heartbeat.
 			 */
-			updateBot : function () {
+			updateBot : function (nCount) {
 					/**
 					 * LogicalBot data that can be used by the
 					 * user bot.
 					 */
 				var oData = {
+					count : nCount,
 					position : {
 						x : oRealBot.x,
 						y : oRealBot.y
